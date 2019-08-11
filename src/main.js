@@ -1,24 +1,44 @@
-import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import LoginComponent from './components/authentication';
+import DashboardContainer from './components/dashboard'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { retrieveData } from './actions/authentication_action'
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 50,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between'
-    }
-  });
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+  }
+});
 
-export default () => {
-    
-  return (
-    <View style={styles.container}>
-      <LoginComponent />
-    </View>
- );
+class RootContainer extends Component {
+
+  componentDidMount() {
+    this.props.retrieveData()
+  }
+
+  render() {
+    let { is_logged } = this.props
+
+    return (
+      <View style={styles.container}>
+        {is_logged ? <DashboardContainer /> : <LoginComponent />}
+      </View>
+    );
+  }
+
 }
+
+const mapStateToProps = props => {
+  return {
+    is_logged: props.authentication.is_logged
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  retrieveData
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(RootContainer)

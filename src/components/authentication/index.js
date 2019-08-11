@@ -43,8 +43,9 @@ class LoginComponent extends Component {
 }
 
 const mapStateToProps = props => {
-    // console.log(props)
-    return {}
+    return {
+
+    }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
